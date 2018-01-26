@@ -10,11 +10,11 @@ Startup script borrowed from silvertoken/tshock-docker
 
 This will start the server in interactive mode and allow you to create a world.  It mounts all the volumes into directories under the location you specify. As an example you could use like /opt/tshock for your file locations.
 
-`docker run -it -p 7777:7777 -v <path to config>:/config -v <path to logs>:/logs -v <path to world>:/world -v <path to plugins>:/plugins --name="tshock" mark2dot0/tshock-docker`
+`docker run -it -p 7777:7777 -v <path to config>:/config -v <path to logs>:/logs -v <path to world>:/world -v <path to plugins>:/plugins --name="tshock" mark2dot0/tshock`
 
 example usage:
 
-`docker run -it -p 7777:7777 -v /opt/tshock/config:/config -v /opt/tshock/logs:/logs -v /opt/tshock/world:/world -v /opt/tshock/plugins:/plugins --name="tshock" mark2dot0/tshock-docker`
+`docker run -it -p 7777:7777 -v /opt/tshock/config:/config -v /opt/tshock/logs:/logs -v /opt/tshock/world:/world -v /opt/tshock/plugins:/plugins --name="tshock" mark2dot0/tshock`
 
 **Autoload world and detach**
 
