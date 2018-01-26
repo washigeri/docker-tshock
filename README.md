@@ -20,4 +20,4 @@ example usage:
 
 This command will autoload the world you made above and detach from the process so that it runs in the background.
 
-`docker run -dit -p 7777:7777 -v /opt/data/tshock/config:/config -v /opt/data/tshock/logs:/logs -v /opt/data/tshock/world:/world -v /opt/data/tshock/plugins:/plugins mark2dot0/tshock-docker -world /world/<name of world you made>.wld`
+`docker run -dit -p 7777:7777 -v /opt/tshock/config:/config -v /opt/tshock/logs:/logs -v /opt/tshock/world:/world -v /opt/tshock/plugins:/plugins mark2dot0/tshock -world /world/<name of world you made>.wld`
