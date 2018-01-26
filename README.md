@@ -1,6 +1,7 @@
 # tShock Docker App
 
 A docker app to run a tShock server for Terraria based on frolvlad/alpine-mono
+
 Startup script borrowed from silvertoken/tshock-docker
 
 ----
@@ -13,7 +14,7 @@ This will start the server in interactive mode and allow you to create a world. 
 
 example usage:
 
-`docker run -it -p 7777:7777 -v </opt/tshock/config>:/config -v </opt/tshock/logs>:/logs -v </opt/tshock/world>:/world -v </opt/tshock/plugins>:/plugins --name="tshock" mark2dot0/tshock-docker`
+`docker run -it -p 7777:7777 -v /opt/tshock/config:/config -v /opt/tshock/logs:/logs -v /opt/tshock/world:/world -v /opt/tshock/plugins:/plugins --name="tshock" mark2dot0/tshock-docker`
 
 **Autoload world and detach**
 
