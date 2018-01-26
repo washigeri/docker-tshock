@@ -1,21 +1,25 @@
-# Dockerfile for a TShock Terraria Server
-# https://github.com/kalhartt/docker-tshock
-FROM mono:3.10.0
-MAINTAINER kalhartt <kalhartt@gmail.com>
+FROM frolvlad/alpine-mono
 
-# Install unzip package
-RUN apt-get -qq update && \
-    apt-get -qqy install unzip
+MAINTAINER Mark <willietgwb@gmail.com>
 
-# Download and setup TShock
-RUN curl -sL https://github.com/NyxStudios/TShock/releases/download/v4.3.19/tshock_4.3.19.zip > /tmp/tshock_4.3.19.zip && \
-    unzip /tmp/tshock_4.3.19.zip -d /opt/tshock
+COPY start.sh /start
+# Add and install mono
+ENV TSHOCK_VERSION=4.3.25
 
-COPY config.json /opt/tshock/tshock/config.json
+RUN mkdir /world /config /logs /plugins /tshock && \
+        cd /tshock && \
+        wget https://github.com/NyxStudios/TShock/releases/download/v$TSHOCK_VERSION/tshock_$TSHOCK_VERSION.zip && \
+        unzip tshock_$TSHOCK_VERSION.zip && \
+        rm tshock_$TSHOCK_VERSION.zip && \
+        chmod +x /tshock/TerrariaServer.exe && \
+        chmod +x /start
 
+# External data
+VOLUME ["/world", "/config", "/logs", "/plugins"]
 
-# Start the server and expose the port
-EXPOSE 7777 7878
-WORKDIR /opt/tshock
-ENTRYPOINT ["mono", "--server", "--gc=sgen", "-O=all", "TerrariaServer.exe"]
-CMD ["-world", "Terraria/Worlds/Default.wld", "-autocreate", "2"]
+# Back to the working directory for the server
+WORKDIR /tshock
+
+EXPOSE 7777
+
+ENTRYPOINT ["/start"]

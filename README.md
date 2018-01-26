@@ -1,96 +1,22 @@
-# docker-tshock
----------------
+# tShock Docker App
 
-A simple docker container for running a TShock Terraria server
+A docker app to run a tShock server for Terraria based on frolvlad/alpine-mono
+Startup script borrowed from silvertoken/tshock-docker
 
-## Installation
----------------
+----
 
-You can install the latest automated build by pulling the image from
-the docker index.
+**Initial run to generate world**
 
-```bash
-docker pull kalhartt/tshock:latest
-```
+This will start the server in interactive mode and allow you to create a world.  It mounts all the volumes into directories under the location you specify. As an example you could use like /opt/tshock for your file locations.
 
-## Quick Start
---------------
+`docker run -it -p 7777:7777 -v <path to config>:/config -v <path to logs>:/logs -v <path to world>:/world -v <path to plugins>:/plugins --name="tshock" mark2dot0/tshock-docker`
 
-A bash script is included to help launch and manage tshock servers using this
-container. Note the script requires `expect` to be installed, and the running
-user must have docker permissions. To start a server just do the following:
+example usage:
 
-```bash
-wget https://raw.githubusercontent.com/kalhartt/docker-tshock/master/tshock.sh
-chmod +x tshock.sh
+`docker run -it -p 7777:7777 -v </opt/tshock/config>:/config -v </opt/tshock/logs>:/logs -v </opt/tshock/world>:/world -v </opt/tshock/plugins>:/plugins --name="tshock" mark2dot0/tshock-docker`
 
-# Start the server
-./tshock.sh start servername
+**Autoload world and detach**
 
-# Attach the server (ctrl-p ctrl-q to detach)
-./tshock.sh attach servername
+This command will autoload the world you made above and detach from the process so that it runs in the background.
 
-# stop the server
-./tshock.sh stop servername
-```
-
-Where `servername` is a name of your choice. This will create a directory at
-`$HOME/servername` to store your world files, logs, and config files. You can
-start the server with custom options as listed below:
-
-```bash
-$ ./tshock.sh
-Usage:
-    tshock [-g PORT] [-p PORT] [-d BASEDIR] start NAME
-    tshock attach NAME
-    tshock stop NAME
-
-Options:
-    NAME        Name of the docker container
-    -d BASEDIR  Directory for mounted volumes (default: $HOME/NAME)
-    -p PORT     Port to bind terraria server to (default: 7777)
-
-$ ./tshock -p 1234 -d /abs/path/to/server start myserver
-```
-
-## Advanced Usage
------------------
-
-The Terraria server is launched with the arguments
-`-world /opt/tshock/Terraria/Worlds/Default.wld -autocreate 2`. These arguments
-can be overriden by passing any arguments to `docker run` like so:
-
-```bash
-docker run -it kalhartt/tshock:latest \
--world /opt/tshock/Terraria/Worlds/MyWorld.wld \
--maxplayers 16
-```
-
-It can be nice to have access to the world files outside of docker to ease
-backups. This can be accomplished by using dockers volumes and some tshock
-arguments. In this example, there is a local folder `Worlds` which we will
-mount to the container at `/opt/tshock/Worlds`. This way all world files will
-be accessible from both locally and inside the docker container.
-
-```bash
-docker run --name='tshock' -it \
--p 7777:7777 -p 7878:7878 \
--v Worlds:/opt/tshock/Worlds \
-kalhartt/tshock:latest \
--world /opt/tshock/Worlds/MyWorld.wld \
--autocreate 2
-```
-
-It is also possible to use a custom config file using the same mechanism. In
-this example, a local folder `config` contains the `config.json` file to be
-used by the server.
-
-```bash
-docker run --name='tshock' -it \
--p 7777:7777 -p 7878:7878 \
--v config:/opt/tshock/config \
-kalhartt/tshock:latest \
--world /opt/tshock/Worlds/Default.wld \
--autocreate 2 \
--config /opt/tshock/config/config.json
-```
+`docker run -dit -p 7777:7777 -v /opt/data/tshock/config:/config -v /opt/data/tshock/logs:/logs -v /opt/data/tshock/world:/world -v /opt/data/tshock/plugins:/plugins mark2dot0/tshock-docker -world /world/<name of world you made>.wld`
